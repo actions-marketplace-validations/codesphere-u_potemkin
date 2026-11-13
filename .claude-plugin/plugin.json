@@ -1,0 +1,20 @@
+{
+  "name": "potemkin",
+  "version": "1.0.0",
+  "description": "Deterministic verification skill that exposes Potemkin stubs, fake fallbacks, dead full-stack wires, secret defaults, and AI test-cheating.",
+  "author": {
+    "name": "codesphere-u",
+    "url": "https://github.com/codesphere-u"
+  },
+  "repository": "https://github.com/codesphere-u/potemkin",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "verification",
+    "anti-slop",
+    "static-analysis",
+    "reward-hacking",
+    "full-stack"
+  ],
+  "skills": "./skills/"
+}

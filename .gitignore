@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+.venv/
+.audit-venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+*.sarif
+.potemkin-baseline.json

@@ -1,0 +1,21 @@
+{
+  "name": "potemkin-marketplace",
+  "owner": {
+    "name": "codesphere-u",
+    "url": "https://github.com/codesphere-u"
+  },
+  "plugins": [
+    {
+      "name": "potemkin",
+      "source": "./",
+      "description": "Expose Potemkin stubs, fake fallbacks, dead API wires, secret defaults, and AI reward hacking.",
+      "version": "1.0.0",
+      "author": {
+        "name": "codesphere-u"
+      },
+      "repository": "https://github.com/codesphere-u/potemkin",
+      "license": "MIT",
+      "strict": false
+    }
+  ]
+}

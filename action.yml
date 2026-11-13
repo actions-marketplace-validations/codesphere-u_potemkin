@@ -1,0 +1,94 @@
+name: Potemkin Real-Code Audit
+description: Deterministic gate exposing hollow UI stubs, fake fallbacks, dead API routes, secret fallbacks, and AI reward hacking.
+branding:
+  icon: shield
+  color: red
+
+inputs:
+  path:
+    description: Repository path to audit
+    required: false
+    default: "."
+  diff:
+    description: Git ref to inspect for test-cheating and suppression creep (e.g. origin/main...HEAD)
+    required: false
+    default: ""
+  fail-on:
+    description: Minimum severity triggering action failure (critical, high, medium, low, any, none)
+    required: false
+    default: "high"
+  min-score:
+    description: Fail if Real-Code Score falls below this integer (0-100)
+    required: false
+    default: ""
+  baseline:
+    description: Path to baseline fingerprint JSON file
+    required: false
+    default: ""
+  sarif-file:
+    description: Optional SARIF output path for GitHub Code Scanning
+    required: false
+    default: "potemkin.sarif"
+
+outputs:
+  score:
+    description: Potemkin Real-Code Score (0-100)
+    value: ${{ steps.audit.outputs.score }}
+  grade:
+    description: Grade label (VERIFIED, CAUTION, POTEMKIN ALERT)
+    value: ${{ steps.audit.outputs.grade }}
+  critical-count:
+    description: Number of critical findings
+    value: ${{ steps.audit.outputs.critical_count }}
+  sarif-file:
+    description: Path to generated SARIF report
+    value: ${{ steps.audit.outputs.sarif_file }}
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+
+    - name: Run Potemkin Audit
+      id: audit
+      shell: bash
+      run: |
+        set +e
+        ARGS=("${{ inputs.path }}" "--fail-on" "${{ inputs.fail-on }}" "--no-color")
+        if [ -n "${{ inputs.diff }}" ]; then
+          ARGS+=("--diff" "${{ inputs.diff }}")
+        fi
+        if [ -n "${{ inputs.min-score }}" ]; then
+          ARGS+=("--min-score" "${{ inputs.min-score }}")
+        fi
+        if [ -n "${{ inputs.baseline }}" ]; then
+          ARGS+=("--baseline" "${{ inputs.baseline }}")
+        fi
+
+        python3 "${{ github.action_path }}/skills/potemkin/scripts/potemkin.py" "${ARGS[@]}" --format json --output /tmp/potemkin-report.json
+        STATUS=$?
+
+        python3 "${{ github.action_path }}/skills/potemkin/scripts/potemkin.py" "${ARGS[@]}" --format markdown --output /tmp/potemkin-summary.md >/dev/null || true
+        if [ -n "${{ inputs.sarif-file }}" ]; then
+          python3 "${{ github.action_path }}/skills/potemkin/scripts/potemkin.py" "${ARGS[@]}" --format sarif --output "${{ inputs.sarif-file }}" >/dev/null || true
+        fi
+
+        python3 - <<'PY'
+        import json, os
+        rep = json.load(open("/tmp/potemkin-report.json"))
+        out = os.environ.get("GITHUB_OUTPUT")
+        if out:
+            with open(out, "a", encoding="utf-8") as fh:
+                fh.write(f"score={rep['score']}\n")
+                fh.write(f"grade={rep['grade']}\n")
+                fh.write(f"critical_count={rep['counts']['critical']}\n")
+                fh.write(f"sarif_file=${{ inputs.sarif-file }}\n")
+        PY
+
+        if [ -n "${GITHUB_STEP_SUMMARY:-}" ] && [ -f /tmp/potemkin-summary.md ]; then
+          cat /tmp/potemkin-summary.md >> "$GITHUB_STEP_SUMMARY"
+        fi
+        exit "$STATUS"
