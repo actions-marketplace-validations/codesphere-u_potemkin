@@ -87,7 +87,7 @@ python3 skills/potemkin/scripts/potemkin.py . --diff HEAD --fail-on high
 Running Potemkin on the included full-stack benchmark fixture [`tests/fixtures/potemkin_app`](tests/fixtures/potemkin_app):
 
 ```text
-Potemkin v1.0.0 — Real-Code Verification Report
+Potemkin v1.0.1 — Real-Code Verification Report
 Target: tests/fixtures/potemkin_app | Files scanned: 5 | Backend routes: 3 | Client calls: 1
 Score:  0/100 (POTEMKIN ALERT)  [critical=4 high=8 medium=5 low=0]
 

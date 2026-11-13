@@ -4,6 +4,14 @@ All notable changes to **Potemkin** are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2026-11-14
+
+### Changed & Hardened
+- **GitHub Action (`action.yml`):** Eliminated triple-scan overhead by running Potemkin in a single pass with `env:`-bound inputs (preventing workflow input shell interpolation), emitting readable console text logs, workspace-clean default SARIF path under `$RUNNER_TEMP`, and clear `::error::` / `::warning::` annotations.
+- **Production Asset Safety (`potemkin.py`):** Automatically skips minified bundles (`*.min.js`, `*.bundle.js`), TypeScript declaration files (`*.d.ts`, `*.d.mts`, `*.d.cts`), broken symlinks, and generated source files larger than 512 KB.
+- **CLI Resilience:** Auto-creates parent directories for `--output` and `--write-baseline`, validates `--min-score` bounds (`0–100`), and emits a clear `stderr` warning if `--diff` fails (e.g., shallow CI clone without `fetch-depth: 0`).
+- **Skill Clarity (`SKILL.md`):** Clarified `<skill-dir>/scripts/potemkin.py` path resolution for multi-agent skill installations.
+
 ## [1.0.0] - 2026-11-14
 
 ### Added

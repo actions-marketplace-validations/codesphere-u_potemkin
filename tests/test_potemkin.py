@@ -309,3 +309,38 @@ def test_skill_package_metadata_and_docs_consistency() -> None:
     marketplace_json = json.loads((ROOT / ".claude-plugin" / "marketplace.json").read_text(encoding="utf-8"))
     assert plugin_json["name"] == "potemkin"
     assert marketplace_json["plugins"][0]["name"] == "potemkin"
+    assert plugin_json["version"] == potemkin.VERSION
+    assert marketplace_json["plugins"][0]["version"] == potemkin.VERSION
+
+
+def test_production_hardening_assets_outputs_and_warnings(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    proj = tmp_path / "prod"
+    proj.mkdir()
+    (proj / "vendor.min.js").write_text('const MOCK_VEND = [{a:1}]; alert("x");\n', encoding="utf-8")
+    (proj / "types.d.ts").write_text('export declare const MOCK_TYPES: any;\n', encoding="utf-8")
+    (proj / "huge.js").write_text('const ok = "real";\n' + ("// pad\n" * 90000), encoding="utf-8")
+    (proj / "clean.ts").write_text("export function add(a: number, b: number) { return a + b; }\n", encoding="utf-8")
+
+    report = potemkin.run_scan(proj)
+    assert report["score"] == 100
+    assert report["files_scanned"] == 1
+
+    # Invalid --min-score fails cleanly with exit code 2
+    assert potemkin.main([str(proj), "--min-score", "105", "--no-color"]) == 2
+    assert "--min-score" in capsys.readouterr().err
+
+    # Nested --output and --write-baseline auto-create parent directories
+    nested_json = tmp_path / "artifacts" / "sub" / "report.json"
+    nested_baseline = tmp_path / "baselines" / "sub" / "baseline.json"
+    assert potemkin.main([str(proj), "--format", "json", "--output", str(nested_json), "--fail-on", "none"]) == 0
+    assert nested_json.is_file()
+    assert potemkin.main([str(proj), "--write-baseline", str(nested_baseline), "--fail-on", "none"]) == 0
+    assert nested_baseline.is_file()
+    capsys.readouterr()
+
+    # --diff on non-git folder emits warning without crashing
+    assert potemkin.main([str(proj), "--diff", "HEAD", "--no-color"]) == 0
+    captured = capsys.readouterr()
+    assert "git diff audit skipped" in captured.err

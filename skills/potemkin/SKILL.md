@@ -11,7 +11,7 @@ license: MIT
 compatibility: Requires Python 3.10+ (stdlib only, zero external packages) and optional git for --diff mode.
 metadata:
   author: codesphere-u
-  version: "1.0.0"
+  version: "1.0.1"
   repository: https://github.com/codesphere-u/potemkin
 ---
 
@@ -30,21 +30,21 @@ Never report a task, pull request, or application as complete until **Potemkin**
 
 ### 1. Run the Deterministic Audit
 
-Execute the bundled zero-dependency scanner relative to the skill directory (`scripts/potemkin.py`):
+Execute the bundled zero-dependency scanner from this skill's directory (for example, `.agents/skills/potemkin/scripts/potemkin.py` or `~/.claude/skills/potemkin/scripts/potemkin.py`), or via `uvx`:
 
 ```bash
 # Full repository audit (JSON for structured triage, or text for readable output)
-python3 scripts/potemkin.py . --format json
+python3 <skill-dir>/scripts/potemkin.py . --format json
 
 # Audit repository AND inspect git diff for AI reward hacking (.skip, suppressions, deleted assertions)
-python3 scripts/potemkin.py . --diff HEAD --format text
+python3 <skill-dir>/scripts/potemkin.py . --diff HEAD --format text
 ```
 
 For large legacy repositories adopting Potemkin incrementally, establish a baseline first and gate on regressions:
 
 ```bash
-python3 scripts/potemkin.py . --write-baseline .potemkin-baseline.json
-python3 scripts/potemkin.py . --diff HEAD --baseline .potemkin-baseline.json --fail-on high
+python3 <skill-dir>/scripts/potemkin.py . --write-baseline .potemkin-baseline.json
+python3 <skill-dir>/scripts/potemkin.py . --diff HEAD --baseline .potemkin-baseline.json --fail-on high
 ```
 
 > Load [references/rules.md](references/rules.md) when you need detailed rule definitions (`POT001`–`POT016`) or suppression rules.
@@ -77,7 +77,7 @@ If an intentional exception genuinely applies (for example, a documented intenti
 Re-run Potemkin alongside the repository's real test suite after fixing all `CRITICAL` and `HIGH` findings:
 
 ```bash
-python3 scripts/potemkin.py . --diff HEAD --fail-on high
+python3 <skill-dir>/scripts/potemkin.py . --diff HEAD --fail-on high
 ```
 
 In your final response to the user, report:

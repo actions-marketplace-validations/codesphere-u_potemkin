@@ -26,9 +26,9 @@ inputs:
     required: false
     default: ""
   sarif-file:
-    description: Optional SARIF output path for GitHub Code Scanning
+    description: Optional SARIF output path for GitHub Code Scanning (defaults to runner temp directory)
     required: false
-    default: "potemkin.sarif"
+    default: ""
 
 outputs:
   score:
@@ -55,40 +55,88 @@ runs:
     - name: Run Potemkin Audit
       id: audit
       shell: bash
+      env:
+        ACTION_PATH: ${{ github.action_path }}
+        INPUT_PATH: ${{ inputs.path }}
+        INPUT_DIFF: ${{ inputs.diff }}
+        INPUT_FAIL_ON: ${{ inputs.fail-on }}
+        INPUT_MIN_SCORE: ${{ inputs.min_score }}
+        INPUT_BASELINE: ${{ inputs.baseline }}
+        INPUT_SARIF_FILE: ${{ inputs.sarif-file }}
       run: |
-        set +e
-        ARGS=("${{ inputs.path }}" "--fail-on" "${{ inputs.fail-on }}" "--no-color")
-        if [ -n "${{ inputs.diff }}" ]; then
-          ARGS+=("--diff" "${{ inputs.diff }}")
-        fi
-        if [ -n "${{ inputs.min-score }}" ]; then
-          ARGS+=("--min-score" "${{ inputs.min-score }}")
-        fi
-        if [ -n "${{ inputs.baseline }}" ]; then
-          ARGS+=("--baseline" "${{ inputs.baseline }}")
-        fi
-
-        python3 "${{ github.action_path }}/skills/potemkin/scripts/potemkin.py" "${ARGS[@]}" --format json --output /tmp/potemkin-report.json
-        STATUS=$?
-
-        python3 "${{ github.action_path }}/skills/potemkin/scripts/potemkin.py" "${ARGS[@]}" --format markdown --output /tmp/potemkin-summary.md >/dev/null || true
-        if [ -n "${{ inputs.sarif-file }}" ]; then
-          python3 "${{ github.action_path }}/skills/potemkin/scripts/potemkin.py" "${ARGS[@]}" --format sarif --output "${{ inputs.sarif-file }}" >/dev/null || true
-        fi
-
         python3 - <<'PY'
-        import json, os
-        rep = json.load(open("/tmp/potemkin-report.json"))
-        out = os.environ.get("GITHUB_OUTPUT")
-        if out:
-            with open(out, "a", encoding="utf-8") as fh:
-                fh.write(f"score={rep['score']}\n")
-                fh.write(f"grade={rep['grade']}\n")
-                fh.write(f"critical_count={rep['counts']['critical']}\n")
-                fh.write(f"sarif_file=${{ inputs.sarif-file }}\n")
-        PY
+        import importlib.util
+        import os
+        import sys
+        from pathlib import Path
 
-        if [ -n "${GITHUB_STEP_SUMMARY:-}" ] && [ -f /tmp/potemkin-summary.md ]; then
-          cat /tmp/potemkin-summary.md >> "$GITHUB_STEP_SUMMARY"
-        fi
-        exit "$STATUS"
+        script_path = Path(os.environ["ACTION_PATH"]) / "skills" / "potemkin" / "scripts" / "potemkin.py"
+        spec = importlib.util.spec_from_file_location("potemkin", script_path)
+        if spec is None or spec.loader is None:
+            raise RuntimeError(f"Unable to load Potemkin engine from {script_path}")
+        potemkin = importlib.util.module_from_spec(spec)
+        sys.modules["potemkin"] = potemkin
+        spec.loader.exec_module(potemkin)
+
+        target_raw = os.environ.get("INPUT_PATH", ".").strip() or "."
+        diff_raw = os.environ.get("INPUT_DIFF", "").strip()
+        fail_on = os.environ.get("INPUT_FAIL_ON", "high").strip().lower() or "high"
+        min_score_raw = os.environ.get("INPUT_MIN_SCORE", "").strip()
+        baseline_raw = os.environ.get("INPUT_BASELINE", "").strip()
+        sarif_raw = os.environ.get("INPUT_SARIF_FILE", "").strip()
+
+        if fail_on not in {"critical", "high", "medium", "low", "any", "none"}:
+            print(f"::error::Invalid fail-on value '{fail_on}'.", file=sys.stderr)
+            raise SystemExit(2)
+
+        min_score = None
+        if min_score_raw:
+            try:
+                min_score = int(min_score_raw)
+            except ValueError:
+                print(f"::error::min-score must be an integer, got '{min_score_raw}'.", file=sys.stderr)
+                raise SystemExit(2)
+            if not 0 <= min_score <= 100:
+                print(f"::error::min-score must be between 0 and 100, got {min_score}.", file=sys.stderr)
+                raise SystemExit(2)
+
+        target = Path(target_raw)
+        if not target.is_dir():
+            print(f"::error::Target directory does not exist: {target}", file=sys.stderr)
+            raise SystemExit(2)
+
+        baseline_path = Path(baseline_raw) if baseline_raw else None
+        report = potemkin.run_scan(
+            target,
+            diff_ref=diff_raw or None,
+            with_diff=bool(diff_raw),
+            ignore_rules=(),
+            baseline_path=baseline_path,
+        )
+
+        print(potemkin.format_text(report, use_color=False))
+        diff_info = report.get("diff_audit")
+        if isinstance(diff_info, dict) and diff_info.get("ran") is False and diff_info.get("error"):
+            print(f"::warning::Potemkin git diff audit skipped ({diff_info['error']}). Ensure fetch-depth: 0.")
+
+        summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
+        if summary_path:
+            with open(summary_path, "a", encoding="utf-8") as fh:
+                fh.write(potemkin.format_markdown(report) + "\n")
+
+        sarif_path = Path(sarif_raw) if sarif_raw else Path(os.environ.get("RUNNER_TEMP", "/tmp")) / "potemkin.sarif"
+        sarif_path.parent.mkdir(parents=True, exist_ok=True)
+        sarif_path.write_text(potemkin.format_sarif(report) + "\n", encoding="utf-8")
+
+        github_output = os.environ.get("GITHUB_OUTPUT")
+        if github_output:
+            with open(github_output, "a", encoding="utf-8") as fh:
+                fh.write(f"score={report['score']}\n")
+                fh.write(f"grade={report['grade']}\n")
+                fh.write(f"critical_count={report['counts']['critical']}\n")
+                fh.write(f"sarif_file={sarif_path}\n")
+
+        if potemkin.should_fail(report["findings"], report["score"], fail_on, min_score):
+            print(f"::error::Potemkin verification failed: {report['score']}/100 ({report['grade']}).")
+            raise SystemExit(1)
+        PY

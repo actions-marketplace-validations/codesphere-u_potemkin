@@ -22,7 +22,17 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
 
-VERSION = "1.0.0"
+VERSION = "1.0.1"
+MAX_FILE_BYTES = 512 * 1024
+SKIP_FILE_SUFFIXES = (
+    ".min.js",
+    ".min.mjs",
+    ".min.cjs",
+    ".bundle.js",
+    ".d.ts",
+    ".d.mts",
+    ".d.cts",
+)
 
 SEVERITY_ORDER = {"critical": 4, "high": 3, "medium": 2, "low": 1}
 SEVERITY_PENALTY = {"critical": 18, "high": 9, "medium": 4, "low": 1}
@@ -1765,8 +1775,15 @@ def run_scan(
     for dirpath, dirnames, filenames in os.walk(root):
         dirnames[:] = sorted(d for d in dirnames if d not in EXCLUDED_DIRS)
         for fname in sorted(filenames):
+            if fname.lower().endswith(SKIP_FILE_SUFFIXES):
+                continue
             fpath = Path(dirpath) / fname
             if fpath.suffix.lower() not in CODE_EXTENSIONS:
+                continue
+            try:
+                if fpath.stat().st_size > MAX_FILE_BYTES:
+                    continue
+            except OSError:
                 continue
             rel_path = fpath.relative_to(root).as_posix()
             if is_excluded(rel_path, cfg):
@@ -1859,6 +1876,9 @@ def main(argv: list[str] | None = None) -> int:
     if not target.is_dir():
         print(f"potemkin: target directory does not exist: {target}", file=sys.stderr)
         return 2
+    if args.min_score is not None and not 0 <= args.min_score <= 100:
+        print(f"potemkin: --min-score must be between 0 and 100, got {args.min_score}", file=sys.stderr)
+        return 2
 
     report = run_scan(
         target,
@@ -1869,8 +1889,13 @@ def main(argv: list[str] | None = None) -> int:
         baseline_path=args.baseline,
     )
 
+    diff_info = report.get("diff_audit")
+    if isinstance(diff_info, dict) and diff_info.get("ran") is False and diff_info.get("error"):
+        print(f"potemkin: warning: git diff audit skipped ({diff_info['error']})", file=sys.stderr)
+
     if args.write_baseline is not None:
         reconstructed = [Finding(**f) for f in report["findings"]]
+        args.write_baseline.parent.mkdir(parents=True, exist_ok=True)
         save_baseline(args.write_baseline, reconstructed)
         print(f"Wrote baseline with {len(reconstructed)} fingerprints to {args.write_baseline}")
         return 0
@@ -1887,6 +1912,7 @@ def main(argv: list[str] | None = None) -> int:
 
     print(rendered)
     if args.output is not None:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(rendered + "\n", encoding="utf-8")
 
     return 1 if should_fail(report["findings"], report["score"], args.fail_on, args.min_score) else 0

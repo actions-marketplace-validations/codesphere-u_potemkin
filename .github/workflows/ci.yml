@@ -90,6 +90,18 @@ jobs:
           test "${{ steps.clean.outputs.critical-count }}" = "0"
           test -s /tmp/clean.sarif
 
+      - name: Run local action with default runner-temp SARIF
+        id: clean_default
+        uses: ./
+        with:
+          path: tests/fixtures/clean_app
+          fail-on: any
+
+      - name: Verify default SARIF created without polluting workspace
+        run: |
+          test -s "${{ steps.clean_default.outputs.sarif-file }}"
+          test -z "$(git status --porcelain)"
+
   docker:
     name: Docker Build & Non-Root Verification
     runs-on: ubuntu-latest
