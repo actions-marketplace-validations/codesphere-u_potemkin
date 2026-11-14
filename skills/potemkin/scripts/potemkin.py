@@ -22,7 +22,7 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
 
-VERSION = "1.0.1"
+VERSION = "1.1.0"
 MAX_FILE_BYTES = 512 * 1024
 SKIP_FILE_SUFFIXES = (
     ".min.js",

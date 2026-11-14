@@ -1,0 +1,16 @@
+{
+  "name": "Potemkin — Real-Code Verification Auditor",
+  "short_name": "Potemkin",
+  "description": "Deterministic Agent Skill, CLI & GitHub Action exposing hollow UI stubs, fake fallbacks, dead API routes, secret fallbacks & AI test cheating.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#fffdf2",
+  "theme_color": "#ff9f43",
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

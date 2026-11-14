@@ -5,9 +5,13 @@
 **Deterministic Agent Skill & CI Gate that exposes where AI-written or scaffolded code faked `"production ready"`.**
 
 [![CI](https://github.com/codesphere-u/potemkin/actions/workflows/ci.yml/badge.svg)](https://github.com/codesphere-u/potemkin/actions/workflows/ci.yml)
+[![Website](https://img.shields.io/badge/website-live-ff9f43.svg)](https://codesphere-u.github.io/potemkin/)
+[![Release](https://img.shields.io/badge/release-v1.1.0-60a5fa.svg)](https://github.com/codesphere-u/potemkin/releases/tag/v1.1.0)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Zero Dependencies](https://img.shields.io/badge/dependencies-0%20(stdlib%20only)-brightgreen.svg)](#architecture)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
+[**Website**](https://codesphere-u.github.io/potemkin/) &bull; [**Interactive Studio**](https://codesphere-u.github.io/potemkin/studio.html) &bull; [**Fixture Proof**](https://codesphere-u.github.io/potemkin/proof.html) &bull; [**Rules (POT001&ndash;POT016)**](https://codesphere-u.github.io/potemkin/rules.html) &bull; [**Docs**](https://codesphere-u.github.io/potemkin/docs.html)
 
 Works as an **Agent Skill** (`npx skills add`, Claude Code, Cursor, Antigravity, Codex), **CLI** (`uvx` / `pip`), **GitHub Action**, and **Docker container**.
 
@@ -87,7 +91,7 @@ python3 skills/potemkin/scripts/potemkin.py . --diff HEAD --fail-on high
 Running Potemkin on the included full-stack benchmark fixture [`tests/fixtures/potemkin_app`](tests/fixtures/potemkin_app):
 
 ```text
-Potemkin v1.0.1 — Real-Code Verification Report
+Potemkin v1.1.0 — Real-Code Verification Report
 Target: tests/fixtures/potemkin_app | Files scanned: 5 | Backend routes: 3 | Client calls: 1
 Score:  0/100 (POTEMKIN ALERT)  [critical=4 high=8 medium=5 low=0]
 
@@ -119,7 +123,7 @@ Score:  0/100 (POTEMKIN ALERT)  [critical=4 high=8 medium=5 low=0]
 Running on [`tests/fixtures/clean_app`](tests/fixtures/clean_app) produces:
 
 ```text
-Potemkin v1.0.0 — Real-Code Verification Report
+Potemkin v1.1.0 — Real-Code Verification Report (clean_app)
 Target: tests/fixtures/clean_app | Files scanned: 4 | Backend routes: 4 | Client calls: 3
 Score:  100/100 (VERIFIED)  [critical=0 high=0 medium=0 low=0]
 
@@ -139,7 +143,7 @@ No Potemkin stubs, fake fallbacks, dead wires, or reward-hacking detected.
 | **`ENV_TRUTH`** | `POT011`–`POT013` | Hardcoded secret fallbacks, secrets exposed under `NEXT_PUBLIC_`/`VITE_`/`PUBLIC_` prefixes, and required runtime env vars missing from `.env.example` |
 | **`DIFF_CHEAT`** | `POT014`–`POT016` | Git diff (`--diff`, `--staged`) catching newly added `.skip`/`pytest.mark.skip`, `@ts-ignore`/`# type: ignore`/`eslint-disable`/`\|\| true`, and deleted/trivial test assertions |
 
-See [skills/potemkin/references/rules.md](skills/potemkin/references/rules.md) for the complete rule matrix and false-positive guards, and [skills/potemkin/references/remediation.md](skills/potemkin/references/remediation.md) for production fixes.
+See [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md), [docs/CI_AND_REMEDIATION.md](docs/CI_AND_REMEDIATION.md), [skills/potemkin/references/rules.md](skills/potemkin/references/rules.md) for the complete rule matrix and false-positive guards, and [skills/potemkin/references/remediation.md](skills/potemkin/references/remediation.md) for production fixes. Live interactive tools and rule lookup are available at [https://codesphere-u.github.io/potemkin/](https://codesphere-u.github.io/potemkin/).
 
 ---
 

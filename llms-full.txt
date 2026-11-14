@@ -1,0 +1,30 @@
+# Potemkin v1.1.0 — Full Reference for AI Assistants & Coding Agents
+
+Potemkin (`potemkin-audit`) is a zero-dependency Python 3.10+ verification tool and Agent Skill built to prove whether an application is actually complete or merely facade-complete.
+
+## Key URLs
+- Website: https://codesphere-u.github.io/potemkin/
+- Interactive Studio: https://codesphere-u.github.io/potemkin/studio.html
+- Proof & Benchmarks: https://codesphere-u.github.io/potemkin/proof.html
+- Rules Matrix: https://codesphere-u.github.io/potemkin/rules.html
+- Docs: https://codesphere-u.github.io/potemkin/docs.html
+- Getting Started: https://github.com/codesphere-u/potemkin/blob/main/docs/GETTING_STARTED.md
+- CI & Remediation: https://github.com/codesphere-u/potemkin/blob/main/docs/CI_AND_REMEDIATION.md
+
+## Complete 16-Rule Catalog (POT001–POT016)
+- `POT001` (high, -9): Hollow UI event handler
+- `POT002` (medium, -4): Dead placeholder link (`#`)
+- `POT003` (high, -9): Theater submit handler (timer/toast without persistence)
+- `POT004` (critical, -18): Deceptive error fallback returning mock/fake success
+- `POT005` (high, -9): Silent catch/except swallowing errors
+- `POT006` (critical, -18): Webhook handler lacks cryptographic signature verification
+- `POT007` (high, -9): Mock fixture, placeholder literal, or NotImplemented stub in runtime
+- `POT008` (high, -9): Frontend request calls missing backend route or mismatched HTTP method
+- `POT009` (medium, -4): Orphan backend route with zero callers or test references
+- `POT010` (medium, -4): Hardcoded localhost URL in runtime code without env override
+- `POT011` (critical, -18): Insecure hardcoded fallback for security-sensitive secret
+- `POT012` (critical, -18): Sensitive secret exposed with client-bundle public prefix
+- `POT013` (medium, -4): Required runtime env var missing from `.env.example`
+- `POT014` (critical, -18): Skipped/disabled test added in git diff
+- `POT015` (high, -9): Type/lint/hook suppression introduced in git diff
+- `POT016` (high, -9): Hollowed test assertions in git diff

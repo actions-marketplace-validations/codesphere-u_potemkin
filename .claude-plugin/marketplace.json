@@ -9,7 +9,7 @@
       "name": "potemkin",
       "source": "./",
       "description": "Expose Potemkin stubs, fake fallbacks, dead API wires, secret defaults, and AI reward hacking.",
-      "version": "1.0.1",
+      "version": "1.1.0",
       "author": {
         "name": "codesphere-u"
       },
