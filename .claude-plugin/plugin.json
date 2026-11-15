@@ -1,6 +1,6 @@
 {
   "name": "potemkin",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Deterministic verification skill that exposes Potemkin stubs, fake fallbacks, dead full-stack wires, secret defaults, and AI test-cheating.",
   "author": {
     "name": "codesphere-u",

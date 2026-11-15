@@ -1,0 +1,50 @@
+# Potemkin v1.1.0 — Full Reference for AI Assistants & Coding Agents
+
+Potemkin (`potemkin-audit`) is a zero-dependency Python 3.10+ verification tool and Agent Skill built to prove whether an application is actually complete or merely facade-complete.
+
+## Key URLs
+- Home: https://codesphere-u.github.io/potemkin/
+- Interactive Studio: https://codesphere-u.github.io/potemkin/studio.html
+- Proof & Benchmarks: https://codesphere-u.github.io/potemkin/proof.html
+- Rules Matrix: https://codesphere-u.github.io/potemkin/rules.html
+- Docs: https://codesphere-u.github.io/potemkin/docs.html
+- Repository: https://github.com/codesphere-u/potemkin
+
+## Installation Paths
+```bash
+npx skills add codesphere-u/potemkin
+uvx --from git+https://github.com/codesphere-u/potemkin potemkin . --diff HEAD
+pip install git+https://github.com/codesphere-u/potemkin.git
+```
+
+## Complete 16-Rule Catalog (POT001–POT016)
+1. **POT001 (high, -9)** Hollow UI event handler — no-op/console-only handler on interactive DOM/JSX element.
+2. **POT002 (medium, -4)** Dead placeholder link (`#`) — use real routes, `#section-id`, or buttons.
+3. **POT003 (high, -9)** Theater submit handler — simulated timer/toast without real persistence.
+4. **POT004 (critical, -18)** Deceptive error fallback — catch block returns mock data or fake HTTP 200 OK.
+5. **POT005 (high, -9)** Silent catch/except — swallows exception without logging or rethrowing.
+6. **POT006 (critical, -18)** Unverified webhook — handler trusts incoming webhook body without HMAC signature verification.
+7. **POT007 (high, -9)** Mock in production — `MOCK_*` / `sample*` fixtures, `test@example.com`, or non-ABC `NotImplementedError`.
+8. **POT008 (high, -9)** Frontend-backend wire gap — client calls missing endpoint or mismatched HTTP verb.
+9. **POT009 (medium, -4)** Orphan backend route — endpoint has zero UI callers or test references (excludes health probes).
+10. **POT010 (medium, -4)** Hardcoded localhost URL in runtime code without env override.
+11. **POT011 (critical, -18)** Hardcoded secret fallback — e.g., `process.env.JWT_SECRET || "fallback"`.
+12. **POT012 (critical, -18)** Publicly exposed secret — secret name prefixed with `NEXT_PUBLIC_`, `VITE_`, or `PUBLIC_`.
+13. **POT013 (medium, -4)** Undocumented runtime env var missing from `.env.example`.
+14. **POT014 (critical, -18)** Diff cheat skipped test — `+ it.skip` / `pytest.mark.skip` introduced in PR diff.
+15. **POT015 (high, -9)** Diff cheat suppression — `@ts-ignore`, `type: ignore`, or `--no-verify` added in PR diff.
+16. **POT016 (high, -9)** Diff cheat hollowed assertion — removed test assertions in modified test files.
+
+## Verified Fixture Evidence
+- `tests/fixtures/clean_app`: Score `100/100 (VERIFIED)` [critical=0 high=0 medium=0 low=0], Files `4`, Routes `4`, Client calls `3`.
+- `tests/fixtures/potemkin_app`: Score `0/100 (POTEMKIN ALERT)` [critical=4 high=8 medium=5 low=0], Files `5`, Routes `3`, Client calls `1`.
+- Repository self-audit (`potemkin . --fail-on any --min-score 100 --no-color`): `100/100 (VERIFIED)`.
+
+## GitHub Action (`codesphere-u/potemkin@v1`)
+Inputs: `path`, `diff`, `fail-on`, `min-score`, `baseline`, `sarif-file`.
+Outputs: `score`, `grade`, `critical-count`, `sarif-file`.
+
+## Baselines & Suppressions
+- Generate baseline: `potemkin . --write-baseline .potemkin-baseline.json`
+- Gate against baseline: `potemkin . --baseline .potemkin-baseline.json --fail-on high`
+- Inline suppression: `// potemkin-ignore: POT010 - local Storybook endpoint`

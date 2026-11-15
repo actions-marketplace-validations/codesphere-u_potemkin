@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#fffdf2"/>
+  <rect x="44" y="44" width="1112" height="542" rx="28" fill="#fbf8eb" stroke="#1e1b18" stroke-opacity="0.14" stroke-width="3"/>
+
+  <!-- Inspection Loupe & Solid Gear Mascot -->
+  <g transform="translate(88 134)">
+    <rect x="26" y="34" width="144" height="144" rx="34" fill="#ff9f43" stroke="#1e1b18" stroke-width="6"/>
+    <rect x="48" y="60" width="100" height="84" rx="18" fill="#fffdf2" stroke="#1e1b18" stroke-width="5"/>
+    <circle cx="78" cy="96" r="14" fill="#60a5fa" stroke="#1e1b18" stroke-width="4.5"/>
+    <circle cx="118" cy="96" r="14" fill="#60a5fa" stroke="#1e1b18" stroke-width="4.5"/>
+    <path d="M74 126L92 126L98 118L108 132L116 126" stroke="#1e1b18" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="158" y1="164" x2="196" y2="202" stroke="#1e1b18" stroke-width="14" stroke-linecap="round"/>
+  </g>
+
+  <text x="348" y="182" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="68" font-weight="800" letter-spacing="-1.8" fill="none" stroke="#1e1b18" stroke-width="9" stroke-linejoin="round">potemkin</text>
+  <text x="348" y="182" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="68" font-weight="800" letter-spacing="-1.8" fill="#ff9f43">potemkin</text>
+
+  <text x="348" y="246" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="34" font-weight="700" fill="#1e1b18">Expose where AI code faked production ready.</text>
+  <text x="348" y="294" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="23" font-weight="500" fill="#4b433b">16 deterministic POT001–POT016 checks · Pure Python 3.10+ stdlib · SARIF CI gate</text>
+
+  <rect x="348" y="344" width="248" height="62" rx="14" fill="#ff9f43" stroke="#1e1b18" stroke-width="2.5"/>
+  <text x="472" y="383" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="800" fill="#4a2100">100/100 VERIFIED</text>
+
+  <rect x="616" y="344" width="240" height="62" rx="14" fill="#60a5fa" stroke="#1e1b18" stroke-width="2.5"/>
+  <text x="736" y="383" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="800" fill="#1e3a8a">16 POT Rules</text>
+
+  <rect x="876" y="344" width="228" height="62" rx="14" fill="#fffdf2" stroke="#1e1b18" stroke-width="2.5"/>
+  <text x="990" y="383" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="700" fill="#1e1b18">Zero Runtime Deps</text>
+
+  <rect x="348" y="438" width="756" height="72" rx="14" fill="#f6f2e2" stroke="#1e1b18" stroke-opacity="0.18" stroke-width="2"/>
+  <text x="376" y="482" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="22" font-weight="600" fill="#1e1b18">$ npx skills add codesphere-u/potemkin &amp;&amp; potemkin . --diff HEAD</text>
+</svg>

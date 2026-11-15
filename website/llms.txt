@@ -1,0 +1,28 @@
+# Potemkin
+
+> Deterministic Agent Skill, pure-stdlib Python 3.10+ CLI, and SARIF 2.1.0 CI gate that detects 16 real-code integrity defects (POT001–POT016) where AI-generated or scaffolded code only looks finished.
+
+- Website: https://codesphere-u.github.io/potemkin/
+- Interactive Studio: https://codesphere-u.github.io/potemkin/studio.html
+- Fixture Proof: https://codesphere-u.github.io/potemkin/proof.html
+- Rules Matrix (POT001–POT016): https://codesphere-u.github.io/potemkin/rules.html
+- Documentation: https://codesphere-u.github.io/potemkin/docs.html
+- Full LLM Context: https://codesphere-u.github.io/potemkin/llms-full.txt
+- Source & Releases: https://github.com/codesphere-u/potemkin
+
+## Quick Install & Run
+- Agent Skill: `npx skills add codesphere-u/potemkin`
+- Ephemeral CLI (`uvx`): `uvx --from git+https://github.com/codesphere-u/potemkin potemkin . --diff HEAD`
+- GitHub Action: `uses: codesphere-u/potemkin@v1`
+
+## Scoring Model
+- Starts at `100`, subtracts `18` per `critical`, `9` per `high`, `4` per `medium`, `1` per `low`.
+- Grades: `90–100` (`VERIFIED`), `70–89` (`CAUTION`), `<70` (`POTEMKIN ALERT`).
+
+## Six Integrity Pillars
+- **HOLLOW_UI (`POT001–POT003`)**: Empty handlers, dead `#` links, fake timer/toast submits.
+- **FAKE_FALLBACK (`POT004–POT006`)**: Catch blocks returning mock success, swallowed exceptions, unverified webhooks.
+- **MOCK_IN_PROD (`POT007`)**: Fixture names, placeholder emails/strings, and non-ABC `NotImplemented` stubs.
+- **WIRE_GAP (`POT008–POT010`)**: Frontend requests calling missing routes/verbs, orphan endpoints, hardcoded localhost URLs.
+- **ENV_TRUTH (`POT011–POT013`)**: Hardcoded secret fallbacks, client-prefixed secrets (`NEXT_PUBLIC_` / `VITE_`), undocumented env vars.
+- **DIFF_CHEAT (`POT014–POT016`)**: Added `.skip` tests, new lint/type suppressions, and hollowed assertions in `git diff`.

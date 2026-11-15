@@ -4,6 +4,18 @@ All notable changes to **Potemkin** are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-11-14
+
+### Added
+- Dedicated static multi-page site under `website/` ([live site](https://codesphere-u.github.io/potemkin/)) featuring Signal Tangerine (`#ff9f43`) & Blueprint Cobalt (`#60a5fa`) accents on Warm Ivory (`#fffdf2`).
+- Interactive browser workbench (`website/studio.html`) with live client-side snippet inspection, frontend/backend `POT008`/`POT009` Wire-Gap matcher, and GitHub Actions YAML builder.
+- Filterable `POT001`–`POT016` rules explorer (`website/rules.html`), verified fixture benchmark proof (`website/proof.html`), and sticky rail documentation (`website/docs.html`).
+- Machine-readable `llms.txt`, `llms-full.txt`, `sitemap.xml`, `robots.txt`, Schema.org `@graph` JSON-LD, and deployment workflow `.github/workflows/pages.yml`.
+- Guide pages [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md) and [docs/CI_AND_REMEDIATION.md](docs/CI_AND_REMEDIATION.md) plus automated website/self-audit tests in `tests/test_website_and_docs.py`.
+
+### Changed
+- Bumped package, skill, plugin, and marketplace metadata to `1.1.0`.
+
 ## [1.0.1] - 2026-11-14
 
 ### Changed & Hardened

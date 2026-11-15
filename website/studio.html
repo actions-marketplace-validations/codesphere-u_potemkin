@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Interactive Studio — Potemkin Real-Code Scanner</title>
+  <meta name="description" content="Inspect code snippets in your browser for POT001–POT016 defects, verify frontend-to-backend HTTP wiring, and build CI &amp; SARIF YAML.">
+  <link rel="canonical" href="https://codesphere-u.github.io/potemkin/studio.html">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#ff9f43">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Potemkin Studio — Browser Real-Code &amp; Wire-Gap Inspector">
+  <meta property="og:description" content="Paste or load realistic presets to simulate POT001–POT016 integrity checks, cross-stack route wiring, and git-diff anti-cheat rules.">
+  <meta property="og:url" content="https://codesphere-u.github.io/potemkin/studio.html">
+  <meta property="og:image" content="https://codesphere-u.github.io/potemkin/og-image.svg">
+
+  <link rel="stylesheet" href="styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Potemkin Interactive Studio",
+    "url": "https://codesphere-u.github.io/potemkin/studio.html",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any browser",
+    "isPartOf": { "@id": "https://codesphere-u.github.io/potemkin/#website" },
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+</head>
+<body data-analytics="plausible">
+  <div class="page-col">
+    <header class="site-header">
+      <a class="brand-link" href="index.html" aria-label="Potemkin Home">
+        <svg class="brand-wordmark-svg" viewBox="0 0 196 36" width="196" height="36" role="img" aria-label="Potemkin">
+          <rect x="2" y="4" width="28" height="28" rx="8" fill="#ff9f43" stroke="#1e1b18" stroke-width="2.4"/>
+          <circle cx="15" cy="17" r="7.5" fill="#fffdf2" stroke="#1e1b18" stroke-width="2"/>
+          <path d="M12 17.2l2 2.2 4-4.2" stroke="#1e3a8a" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="21" y1="23" x2="26" y2="28" stroke="#1e1b18" stroke-width="2.6" stroke-linecap="round"/>
+          <text x="38" y="25.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="24" font-weight="800" letter-spacing="-0.6" fill="none" stroke="#1e1b18" stroke-width="4.2" stroke-linejoin="round">Potemkin</text>
+          <text x="38" y="25.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="24" font-weight="800" letter-spacing="-0.6" fill="#ff9f43">Potemkin</text>
+        </svg>
+      </a>
+      <nav class="header-nav" aria-label="Primary navigation">
+        <a class="active" href="studio.html">Studio</a>
+        <a href="proof.html">Proof</a>
+        <a href="rules.html">Rules</a>
+        <a href="docs.html">Docs</a>
+        <a class="icon-link" href="https://github.com/codesphere-u/potemkin" aria-label="Potemkin on GitHub">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.11.79-.25.79-.56v-2c-3.2.7-3.87-1.54-3.87-1.54-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.19-3.08-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a10.9 10.9 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.8 1.19 1.83 1.19 3.08 0 4.41-2.69 5.39-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.68.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>
+        </a>
+        <a class="nav-pill" href="docs.html#install">Install</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <h1>Potemkin Interactive Studio</h1>
+        <p class="hero-sub">Run Potemkin&apos;s scoring formula client-side on code presets, verify frontend-to-backend HTTP wiring, and export CI configuration.</p>
+      </section>
+
+      <section class="studio-frame" aria-label="Potemkin Workbench">
+        <div class="handy-tabs-bar">
+          <div class="handy-tabs" role="tablist">
+            <button class="handy-tab active" type="button" data-studio-tab="scanner">1. Live Stub &amp; Secret Scanner</button>
+            <button class="handy-tab" type="button" data-studio-tab="wiring">2. Wire-Gap Contract Matcher</button>
+            <button class="handy-tab" type="button" data-studio-tab="ci">3. CI &amp; Baseline Builder</button>
+          </div>
+          <span class="version-tag">100% browser-local</span>
+        </div>
+
+        <div class="studio-panel active" data-studio-panel="scanner">
+          <div class="toolbar-between" style="margin-bottom:0.75rem;">
+            <span class="eyebrow-label" style="margin:0;">Load sample fixture</span>
+            <div class="preset-pills">
+              <button class="chip-btn active" type="button" data-preset="potemkin-app">Potemkin App (Stubs + Secret)</button>
+              <button class="chip-btn" type="button" data-preset="webhook-gap">Unverified Webhook + Fallback</button>
+              <button class="chip-btn" type="button" data-preset="clean-app">Verified Real Handler</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="studio-code">Code snippet to inspect (TypeScript, JavaScript, or Python)</label>
+            <textarea class="textarea" id="studio-code" spellcheck="false"></textarea>
+          </div>
+
+          <div class="score-row">
+            <div class="score-cell"><span>Integrity Score</span><strong id="st-score">100 / 100</strong></div>
+            <div class="score-cell"><span>Grade</span><strong id="st-grade">VERIFIED</strong></div>
+            <div class="score-cell"><span>Critical / High</span><strong id="st-ch">0 / 0</strong></div>
+            <div class="score-cell"><span>Medium / Low</span><strong id="st-ml">0 / 0</strong></div>
+          </div>
+
+          <div class="diag-note" id="st-summary">Select a preset or edit the snippet above to compute Potemkin findings.</div>
+          <div class="rw-list" id="st-findings"></div>
+        </div>
+
+        <div class="studio-panel" data-studio-panel="wiring">
+          <p class="sec-sub" style="margin-bottom:0.85rem;">Simulate <code>POT008</code> (missing backend route) and <code>POT009</code> (orphan endpoint) across your frontend and backend manifests.</p>
+          <div class="form-row-2">
+            <div class="field">
+              <label for="wire-fe">Frontend requests (METHOD /path)</label>
+              <textarea class="textarea" id="wire-fe" style="min-height:112px;">GET /api/orders
+POST /api/orders
+POST /api/profile</textarea>
+            </div>
+            <div class="field">
+              <label for="wire-be">Backend registered routes (METHOD /path)</label>
+              <textarea class="textarea" id="wire-be" style="min-height:112px;">GET /api/orders
+POST /api/checkout
+DELETE /api/admin/legacy</textarea>
+            </div>
+          </div>
+          <div class="score-row">
+            <div class="score-cell"><span>Matched Calls</span><strong id="wr-matched">1</strong></div>
+            <div class="score-cell"><span>POT008 Wire Gaps</span><strong id="wr-gaps">2</strong></div>
+            <div class="score-cell"><span>POT009 Orphans</span><strong id="wr-orphans">2</strong></div>
+            <div class="score-cell"><span>Wire Score</span><strong id="wr-score">74 / 100</strong></div>
+          </div>
+          <div class="rw-list" id="wr-findings"></div>
+        </div>
+
+        <div class="studio-panel" data-studio-panel="ci">
+          <div class="form-row-2">
+            <div class="field">
+              <label for="ci-gate">Minimum Integrity Score</label>
+              <select class="select" id="ci-gate">
+                <option value="100">100 (Strict self-audit)</option>
+                <option value="90" selected>90 (VERIFIED threshold)</option>
+                <option value="75">75 (Incremental adoption)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="ci-failon">Fail severity threshold</label>
+              <select class="select" id="ci-failon">
+                <option value="critical">critical (&minus;18 each)</option>
+                <option value="high" selected>high (&minus;9 each)</option>
+                <option value="medium">medium (&minus;4 each)</option>
+                <option value="any">any</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="field">
+              <label for="ci-diff">PR diff base ref (enables POT014&ndash;POT016 anti-cheat)</label>
+              <input class="input" id="ci-diff" type="text" value="origin/main">
+            </div>
+            <div class="field">
+              <label for="ci-sarif">SARIF output file</label>
+              <input class="input" id="ci-sarif" type="text" value="potemkin.sarif">
+            </div>
+          </div>
+          <div class="toolbar-between" style="margin-bottom:0.5rem;">
+            <span class="eyebrow-label" style="margin:0;">Generated GitHub Actions step</span>
+            <button class="action-mini" id="ci-copy-btn" type="button">Copy YAML</button>
+          </div>
+          <pre class="code-block" id="ci-output"></pre>
+        </div>
+      </section>
+
+      <section class="editorial-article">
+        <h2>Scoring &amp; Exit Codes</h2>
+        <p>Every snippet evaluated in Studio uses the exact severity deductions from <code>potemkin.py</code>: starting at <code>100</code>, subtracting <code>18</code> per Critical finding, <code>9</code> per High, <code>4</code> per Medium, and <code>1</code> per Low.</p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-links">
+        <a href="index.html">Home</a> &middot;
+        <a href="proof.html">Proof</a> &middot;
+        <a href="rules.html">Rules</a> &middot;
+        <a href="docs.html">Docs</a> &middot;
+        <a href="llms.txt">llms.txt</a> &middot;
+        <a href="https://github.com/codesphere-u/potemkin">GitHub</a> &middot;
+        <a href="https://github.com/codesphere-u/potemkin/releases/tag/v1.1.0">v1.1.0</a>
+      </div>
+      <div>Privacy-friendly analytics via Plausible &middot; MIT License &middot; <a href="https://github.com/codesphere-u">codesphere-u</a></div>
+    </footer>
+  </div>
+
+  <script type="application/json" id="potemkin-studio-presets">
+  {
+    "potemkin-app": "const secret = process.env.JWT_SECRET || \"dev-secret-123\";\nexport const NEXT_PUBLIC_ADMIN_KEY = process.env.NEXT_PUBLIC_ADMIN_KEY;\nconst sampleOrders = [{ id: \"ord_1\", contact: \"test@example.com\" }];\nfunction handleCheckout() {\n  setTimeout(() => console.log(\"Order placed!\"), 400);\n}\nexport function SaveBtn() {\n  return <button onClick={() => {}}>Save</button>;\n}\nasync function loadMetrics() {\n  try {\n    return await fetch(\"http://localhost:8000/api/metrics\");\n  } catch (err) {\n    return { ok: true, data: sampleOrders };\n  }\n}",
+    "webhook-gap": "app.post(\"/api/stripe/webhook\", async (req, res) => {\n  // POT006: trusting webhook payload without signature check\n  await processInvoice(req.body.id);\n  return res.status(200).json({ received: true });\n});\nfunction syncBilling() {\n  try {\n    return runBillingJob();\n  } catch (err) {\n    // silent catch\n  }\n}\n+ it.skip(\"verifies Stripe webhook HMAC signature\", async () => {\n+ // @ts-ignore\n+ expect(true).toBe(true);\n+ });",
+    "clean-app": "import { verifyStripeSignature } from \"./crypto\";\nconst jwtSecret = process.env.JWT_SECRET;\nif (!jwtSecret) {\n  throw new Error(\"JWT_SECRET must be set at startup\");\n}\nexport async function handleCheckout(orderId, signal) {\n  const apiBase = process.env.API_BASE_URL;\n  const res = await fetch(`${apiBase}/api/orders/${encodeURIComponent(orderId)}`, { method: \"POST\", signal });\n  if (!res.ok) {\n    throw new Error(`Order request failed: ${res.status}`);\n  }\n  return res.json();\n}"
+  }
+  </script>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

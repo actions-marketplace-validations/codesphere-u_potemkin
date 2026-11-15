@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "potemkin-audit"
-version = "1.0.1"
+version = "1.1.0"
 description = "Deterministic Agent Skill & CLI that exposes Potemkin stubs, fake fallbacks, dead full-stack wires, secret fallbacks, and AI reward hacking."
 readme = "README.md"
 license = "MIT"
@@ -32,7 +32,9 @@ classifiers = [
 dependencies = []
 
 [project.urls]
-Homepage = "https://github.com/codesphere-u/potemkin"
+Homepage = "https://codesphere-u.github.io/potemkin/"
+Website = "https://codesphere-u.github.io/potemkin/"
+Documentation = "https://codesphere-u.github.io/potemkin/docs"
 Repository = "https://github.com/codesphere-u/potemkin"
 Issues = "https://github.com/codesphere-u/potemkin/issues"
 

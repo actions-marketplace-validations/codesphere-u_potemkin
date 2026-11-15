@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rules Matrix (POT001–POT016) — Potemkin</title>
+  <meta name="description" content="Complete filterable reference for all 16 Potemkin rules (POT001–POT016) across Hollow UI, Fake Fallbacks, Mock in Prod, Wire Gaps, Env Truth, and Diff Cheats.">
+  <link rel="canonical" href="https://codesphere-u.github.io/potemkin/rules.html">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#ff9f43">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Potemkin Rules Matrix — All 16 Checks (POT001–POT016)">
+  <meta property="og:description" content="Search and filter POT001–POT016 rules by severity, pillar, and remediation fix.">
+  <meta property="og:url" content="https://codesphere-u.github.io/potemkin/rules.html">
+  <meta property="og:image" content="https://codesphere-u.github.io/potemkin/og-image.svg">
+
+  <link rel="stylesheet" href="styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Potemkin Rules Catalog (POT001–POT016)",
+    "url": "https://codesphere-u.github.io/potemkin/rules.html",
+    "isPartOf": { "@id": "https://codesphere-u.github.io/potemkin/#website" }
+  }
+  </script>
+</head>
+<body data-analytics="plausible">
+  <div class="page-col">
+    <header class="site-header">
+      <a class="brand-link" href="index.html" aria-label="Potemkin Home">
+        <svg class="brand-wordmark-svg" viewBox="0 0 196 36" width="196" height="36" role="img" aria-label="Potemkin">
+          <rect x="2" y="4" width="28" height="28" rx="8" fill="#ff9f43" stroke="#1e1b18" stroke-width="2.4"/>
+          <circle cx="15" cy="17" r="7.5" fill="#fffdf2" stroke="#1e1b18" stroke-width="2"/>
+          <path d="M12 17.2l2 2.2 4-4.2" stroke="#1e3a8a" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="21" y1="23" x2="26" y2="28" stroke="#1e1b18" stroke-width="2.6" stroke-linecap="round"/>
+          <text x="38" y="25.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="24" font-weight="800" letter-spacing="-0.6" fill="none" stroke="#1e1b18" stroke-width="4.2" stroke-linejoin="round">Potemkin</text>
+          <text x="38" y="25.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="24" font-weight="800" letter-spacing="-0.6" fill="#ff9f43">Potemkin</text>
+        </svg>
+      </a>
+      <nav class="header-nav" aria-label="Primary navigation">
+        <a href="studio.html">Studio</a>
+        <a href="proof.html">Proof</a>
+        <a class="active" href="rules.html">Rules</a>
+        <a href="docs.html">Docs</a>
+        <a class="icon-link" href="https://github.com/codesphere-u/potemkin" aria-label="Potemkin on GitHub">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.11.79-.25.79-.56v-2c-3.2.7-3.87-1.54-3.87-1.54-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.19-3.08-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a10.9 10.9 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.8 1.19 1.83 1.19 3.08 0 4.41-2.69 5.39-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.68.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>
+        </a>
+        <a class="nav-pill" href="docs.html#install">Install</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <h1>Rules Matrix (POT001&ndash;POT016)</h1>
+        <p class="hero-sub">Filter all 16 deterministic checks by pillar, keyword, or rule ID.</p>
+      </section>
+
+      <section aria-label="Filter rules">
+        <div class="rules-filter">
+          <input class="input" id="rules-search" type="search" placeholder="Search POT004, webhook, fallback, secret, skip..." aria-label="Search rules">
+          <select class="select" id="rules-pillar" aria-label="Filter by pillar">
+            <option value="ALL">All 6 Pillars (16 rules)</option>
+            <option value="HOLLOW_UI">HOLLOW_UI (POT001&ndash;POT003)</option>
+            <option value="FAKE_FALLBACK">FAKE_FALLBACK (POT004&ndash;POT006)</option>
+            <option value="MOCK_IN_PROD">MOCK_IN_PROD (POT007)</option>
+            <option value="WIRE_GAP">WIRE_GAP (POT008&ndash;POT010)</option>
+            <option value="ENV_TRUTH">ENV_TRUTH (POT011&ndash;POT013)</option>
+            <option value="DIFF_CHEAT">DIFF_CHEAT (POT014&ndash;POT016)</option>
+          </select>
+        </div>
+
+        <div class="doc-table-wrap">
+          <table class="doc-table" id="rules-table">
+            <thead>
+              <tr>
+                <th>Rule</th>
+                <th>Pillar</th>
+                <th>Severity</th>
+                <th>Detection &amp; Remediation</th>
+              </tr>
+            </thead>
+            <tbody id="rules-tbody">
+              <tr data-pillar="HOLLOW_UI"><td><code>POT001</code></td><td><span class="pill pill-tang">HOLLOW_UI</span></td><td><span class="pill pill-warn">high (-9)</span></td><td><strong>Hollow UI event handler</strong><br>No-op or console-only handler on a UI trigger. Wire it to state mutation or real API calls.</td></tr>
+              <tr data-pillar="HOLLOW_UI"><td><code>POT002</code></td><td><span class="pill pill-tang">HOLLOW_UI</span></td><td><span class="pill">medium (-4)</span></td><td><strong>Dead placeholder link (<code>#</code>)</strong><br>Point <code>href</code>/<code>to</code> at a real route, valid <code>#section-id</code>, or convert to a button.</td></tr>
+              <tr data-pillar="HOLLOW_UI"><td><code>POT003</code></td><td><span class="pill pill-tang">HOLLOW_UI</span></td><td><span class="pill pill-warn">high (-9)</span></td><td><strong>Theater submit handler</strong><br>Simulated delay/toast without persistence. Connect form submission to a real request or Server Action.</td></tr>
+
+              <tr data-pillar="FAKE_FALLBACK"><td><code>POT004</code></td><td><span class="pill pill-bad">FAKE_FALLBACK</span></td><td><span class="pill pill-bad">critical (-18)</span></td><td><strong>Deceptive error fallback returning mock/fake success</strong><br>Propagate errors or return an explicit non-200 failure instead of returning fake success data.</td></tr>
+              <tr data-pillar="FAKE_FALLBACK"><td><code>POT005</code></td><td><span class="pill pill-bad">FAKE_FALLBACK</span></td><td><span class="pill pill-warn">high (-9)</span></td><td><strong>Silent catch/except swallowing errors</strong><br>Handle, log with context, or rethrow exceptions explicitly so runtime failures stay visible.</td></tr>
+              <tr data-pillar="FAKE_FALLBACK"><td><code>POT006</code></td><td><span class="pill pill-bad">FAKE_FALLBACK</span></td><td><span class="pill pill-bad">critical (-18)</span></td><td><strong>Webhook handler lacks cryptographic signature verification</strong><br>Verify HMAC/provider signature headers using constant-time comparison before processing payloads.</td></tr>
+
+              <tr data-pillar="MOCK_IN_PROD"><td><code>POT007</code></td><td><span class="pill pill-tang">MOCK_IN_PROD</span></td><td><span class="pill pill-warn">high (-9)</span></td><td><strong>Mock fixture, placeholder literal, or NotImplemented stub in runtime</strong><br>Replace sample identifiers, <code>example.com</code> defaults, or non-ABC stubs with real data loaders.</td></tr>
+
+              <tr data-pillar="WIRE_GAP"><td><code>POT008</code></td><td><span class="pill pill-cobalt">WIRE_GAP</span></td><td><span class="pill pill-warn">high (-9)</span></td><td><strong>Frontend request calls missing backend route or mismatched HTTP method</strong><br>Align frontend URL/verb with an actual Express, Next.js, FastAPI, or Flask handler.</td></tr>
+              <tr data-pillar="WIRE_GAP"><td><code>POT009</code></td><td><span class="pill pill-cobalt">WIRE_GAP</span></td><td><span class="pill">medium (-4)</span></td><td><strong>Orphan backend route with zero callers or test references</strong><br>Wire the endpoint into the client/tests or delete stale scaffolded handlers.</td></tr>
+              <tr data-pillar="WIRE_GAP"><td><code>POT010</code></td><td><span class="pill pill-cobalt">WIRE_GAP</span></td><td><span class="pill">medium (-4)</span></td><td><strong>Hardcoded localhost URL in runtime code</strong><br>Read base URLs from environment variables with explicit production configuration.</td></tr>
+
+              <tr data-pillar="ENV_TRUTH"><td><code>POT011</code></td><td><span class="pill pill-bad">ENV_TRUTH</span></td><td><span class="pill pill-bad">critical (-18)</span></td><td><strong>Insecure hardcoded fallback for security-sensitive secret</strong><br>Fail fast at startup if required secret env vars are unset in production.</td></tr>
+              <tr data-pillar="ENV_TRUTH"><td><code>POT012</code></td><td><span class="pill pill-bad">ENV_TRUTH</span></td><td><span class="pill pill-bad">critical (-18)</span></td><td><strong>Sensitive secret exposed with client-bundle public prefix</strong><br>Remove <code>NEXT_PUBLIC_</code>, <code>VITE_</code>, or <code>PUBLIC_</code> prefixes from server secrets immediately.</td></tr>
+              <tr data-pillar="ENV_TRUTH"><td><code>POT013</code></td><td><span class="pill pill-cobalt">ENV_TRUTH</span></td><td><span class="pill">medium (-4)</span></td><td><strong>Required runtime env var missing from <code>.env.example</code></strong><br>Document every non-standard runtime env var in <code>.env.example</code> for clean onboarding.</td></tr>
+
+              <tr data-pillar="DIFF_CHEAT"><td><code>POT014</code></td><td><span class="pill pill-bad">DIFF_CHEAT</span></td><td><span class="pill pill-bad">critical (-18)</span></td><td><strong>Agent reward hacking: skipped/disabled test added in git diff</strong><br>Fix the broken test or implementation instead of adding <code>.skip</code>, <code>xit</code>, or <code>pytest.mark.skip</code>.</td></tr>
+              <tr data-pillar="DIFF_CHEAT"><td><code>POT015</code></td><td><span class="pill pill-tang">DIFF_CHEAT</span></td><td><span class="pill pill-warn">high (-9)</span></td><td><strong>Type/lint/hook suppression introduced in git diff</strong><br>Resolve underlying violations rather than slipping <code>@ts-ignore</code>, <code>type: ignore</code>, or <code>--no-verify</code> into diffs.</td></tr>
+              <tr data-pillar="DIFF_CHEAT"><td><code>POT016</code></td><td><span class="pill pill-tang">DIFF_CHEAT</span></td><td><span class="pill pill-warn">high (-9)</span></td><td><strong>Hollowed test assertions in git diff</strong><br>Restore behavioral assertions instead of deleting checks or asserting trivially in test edits.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-links">
+        <a href="index.html">Home</a> &middot;
+        <a href="studio.html">Studio</a> &middot;
+        <a href="proof.html">Proof</a> &middot;
+        <a href="docs.html">Docs</a> &middot;
+        <a href="llms.txt">llms.txt</a> &middot;
+        <a href="https://github.com/codesphere-u/potemkin">GitHub</a> &middot;
+        <a href="https://github.com/codesphere-u/potemkin/releases/tag/v1.1.0">v1.1.0</a>
+      </div>
+      <div>Privacy-friendly analytics via Plausible &middot; MIT License &middot; <a href="https://github.com/codesphere-u">codesphere-u</a></div>
+    </footer>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
